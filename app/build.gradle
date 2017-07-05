@@ -1,0 +1,67 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.0"
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main {
+            // ignore resources
+            res.srcDirs = []
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'], excludes: ['unity.jar'])
+    // dont compile unity.jar to library, just do syntax check
+    provided files('libs/unity.jar')
+    compile 'com.android.support:appcompat-v7:26.+'
+}
+
+// This is the actual solution, as in http://stackoverflow.com/a/19037807/1002054
+task clearBack(type: Delete) {
+    delete 'build/libs/CrossPlatformAPI.aar'
+}
+task checkAar {
+    doLast{
+        assert file("build/libs/CrossPlatformAPI.aar").exists()
+    }
+}
+
+task backAar(type: Copy) {
+    from('build/outputs/aar/')
+    include('app-release.aar')
+    rename ('app-release.aar', 'CrossPlatformAPI.aar')
+    into('build/libs/')
+}
+
+task copy2unity(type: Copy, dependsOn: checkAar) {
+    from('build/libs/')
+    into("../../Assets/Plugins/Android/")
+}
+
+task copy2gradle(type: Copy, dependsOn: checkAar) {
+    from('build/libs/')
+    into("../../Build/gradle/CrossPlatformAPI/libs/")
+
+    onlyIf { file("../../Build/gradle/CrossPlatformAPI/libs/").exists() }
+}
+
+task buildAndCopy(dependsOn: [clearBack, build, backAar, copy2unity, copy2gradle]) {
+    description 'build and copy all'
+    build.dependsOn clearBack
+    backAar.dependsOn build
+}
