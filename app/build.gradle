@@ -50,14 +50,16 @@ task backAar(type: Copy) {
 
 task copy2unity(type: Copy, dependsOn: checkAar) {
     from('build/libs/')
-    into("../../Assets/Plugins/Android/")
+    into("../../Unity-CrossPlatformAPI/Assets/Plugins/Android/")
+
+    onlyIf { file("../../Unity-CrossPlatformAPI/Assets/Plugins/Android/").exists() }
 }
 
 task copy2gradle(type: Copy, dependsOn: checkAar) {
     from('build/libs/')
-    into("../../Build/gradle/CrossPlatformAPI/libs/")
+    into("../../Unity-CrossPlatformAPI/Build/gradle/CrossPlatformAPI/libs/")
 
-    onlyIf { file("../../Build/gradle/CrossPlatformAPI/libs/").exists() }
+    onlyIf { file("../../Unity-CrossPlatformAPI/Build/gradle/CrossPlatformAPI/libs/").exists() }
 }
 
 task buildAndCopy(dependsOn: [clearBack, build, backAar, copy2unity, copy2gradle]) {
