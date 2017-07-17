@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.Button;
 
 import com.litefeel.crossplatformapi.android.AndroidPlatform;
+import com.litefeel.crossplatformapi.android.ui.UI;
+import com.litefeel.crossplatformapi.android.ui.AlertParams;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,6 +42,19 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 AndroidPlatform.nativeShareImage("android.resource://" + getPackageName()
                         + "/mipmap/" + "ic_launcher", "this is share image and text");
+            }
+        });
+
+        findViewById(R.id.alertBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertParams params = new AlertParams();
+                params.title = "this is title";
+                params.message = "this is message";
+                params.yesButton = "OK";
+                //params.neutralButton = "Neutral";
+                params.noButton = "No";
+                UI.showAlert(params);
             }
         });
     }

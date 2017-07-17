@@ -1,4 +1,4 @@
-package com.litefeel.crossplatformapi.android;
+package com.litefeel.crossplatformapi.android.utils;
 
 import android.app.Activity;
 import android.app.Application;
