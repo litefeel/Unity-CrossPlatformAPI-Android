@@ -57,5 +57,13 @@ public class MainActivity extends AppCompatActivity {
                 UI.showAlert(params);
             }
         });
+
+
+        findViewById(R.id.toastBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                UI.showToast("this is toast", false);
+            }
+        });
     }
 }
