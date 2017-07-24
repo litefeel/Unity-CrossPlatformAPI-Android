@@ -1,5 +1,6 @@
 package com.unity3d.player;
 
+import android.app.Activity;
 import android.util.Log;
 
 /**
@@ -14,4 +15,6 @@ public class UnityPlayer {
         Log.d(TAG, String.format("UnitySendMessage: %s->%s(%s)", goName, method, value));
 
     }
+
+    public static Activity currentActivity = null;
 }

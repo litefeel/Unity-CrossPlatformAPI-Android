@@ -6,8 +6,10 @@ import android.view.View;
 import android.widget.Button;
 
 import com.litefeel.crossplatformapi.android.AndroidPlatform;
+import com.litefeel.crossplatformapi.android.share.Share;
 import com.litefeel.crossplatformapi.android.ui.UI;
 import com.litefeel.crossplatformapi.android.ui.AlertParams;
+import com.unity3d.player.UnityPlayer;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,8 +17,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        AndroidPlatform.init(this);
+        UnityPlayer.currentActivity = this;
+        AndroidPlatform.init();
 
 
         Button shareTextBtn = (Button) findViewById(R.id.shareTextBtn);
@@ -24,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 //                AndroidPlatform.nativeShareText(new String[]{"this is native share text!"});
-                AndroidPlatform.nativeShareText("this is share only text!");
+                Share.shareText("this is share only text!");
             }
         });
 
@@ -32,15 +34,15 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.shareImageBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AndroidPlatform.nativeShareImage("android.resource://" + getPackageName()
-                        + "/mipmap/" + "ic_launcher");
+                Share.shareImage("android.resource://" + getPackageName()
+                        + "/mipmap/" + "ic_launcher", null);
             }
         });
 
         findViewById(R.id.shareImageAndTextBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AndroidPlatform.nativeShareImage("android.resource://" + getPackageName()
+                Share.shareImage("android.resource://" + getPackageName()
                         + "/mipmap/" + "ic_launcher", "this is share image and text");
             }
         });
