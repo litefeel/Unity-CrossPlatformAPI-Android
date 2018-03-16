@@ -10,6 +10,9 @@ import android.support.test.uiautomator.UiSelector;
 import android.util.Log;
 
 import com.litefeel.crossplatformapi.android.AndroidPlatform;
+import com.litefeel.crossplatformapi.android.album.Album;
+import com.litefeel.crossplatformapi.android.clipboard.Clipboard;
+import com.litefeel.crossplatformapi.android.share.Share;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -72,8 +75,8 @@ public class ExampleInstrumentedTest {
     @Test
     public void copyAndPaset() throws Exception {
         String pasteStr = "this is paste text!";
-        AndroidPlatform.pasteToClipboard(pasteStr);
-        String copyedStr = AndroidPlatform.copyFromClipboard();
+        Clipboard.setText(pasteStr);
+        String copyedStr = Clipboard.getText();
         assertEquals(pasteStr, copyedStr);
     }
 
@@ -81,13 +84,13 @@ public class ExampleInstrumentedTest {
     public void saveToAlbum() throws Exception {
         Context appContext = InstrumentationRegistry.getTargetContext();
         String path = "android.resource://" + appContext.getPackageName() + "/mipmap/" + "ic_launcher";
-        AndroidPlatform.saveToAlbum(path);
+        Album.saveImage(path);
     }
 
     @Test
     public void shareText() throws Exception {
         Log.d(TAG, "before share text");
-        AndroidPlatform.nativeShareText("this is share text");
+        Share.shareText("this is share text");
         Log.d(TAG, "after share text");
 
         UiObject button = mDevice.findObject(new UiSelector().text("JUST ONCE"));
