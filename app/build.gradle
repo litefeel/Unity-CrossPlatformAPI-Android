@@ -25,10 +25,10 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'], excludes: ['unity.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'], excludes: ['unity.jar'])
     // dont compile unity.jar to library, just do syntax check
-    provided files('libs/unity.jar')
-    compile 'com.android.support:appcompat-v7:26.+'
+    compileOnly files('libs/unity.jar')
+    implementation 'com.android.support:appcompat-v7:26.+'
 }
 
 // This is the actual solution, as in http://stackoverflow.com/a/19037807/1002054
