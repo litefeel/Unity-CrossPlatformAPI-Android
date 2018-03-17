@@ -74,6 +74,7 @@ public class ExampleInstrumentedTest {
 
     @Test
     public void copyAndPaset() throws Exception {
+        Log.d(TAG, "copyAndPaset");
         String pasteStr = "this is paste text!";
         Clipboard.setText(pasteStr);
         String copyedStr = Clipboard.getText();
@@ -82,6 +83,7 @@ public class ExampleInstrumentedTest {
 
     @Test
     public void saveToAlbum() throws Exception {
+        Log.d(TAG, "saveToAlbum");
         Context appContext = InstrumentationRegistry.getTargetContext();
         String path = "android.resource://" + appContext.getPackageName() + "/mipmap/" + "ic_launcher";
         Album.saveImage(path);
@@ -89,6 +91,7 @@ public class ExampleInstrumentedTest {
 
     @Test
     public void shareText() throws Exception {
+        Log.d(TAG, "shareText");
         Log.d(TAG, "before share text");
         Share.shareText("this is share text");
         Log.d(TAG, "after share text");
@@ -98,7 +101,16 @@ public class ExampleInstrumentedTest {
         if (button.exists() && button.isEnabled()) {
             button.click();
         }
-        // 出现系统提示框，会阻塞主线程，点按home键防止阻塞主线程
-        mDevice.pressHome();
+
+        ////// 出现系统提示框，Android5.1会阻塞主线程，需要将消息选择框取消掉
+        // 退出IME界面
+        mDevice.pressBack();
+        // 退出消息界面，并提示二次确认
+        mDevice.pressBack();
+        // 确认退出消息界面
+        UiObject okBtn = mDevice.findObject(new UiSelector().text("OK"));
+        if (okBtn.exists() && okBtn.isEnabled()) {
+            okBtn.click();
+        }
     }
 }
