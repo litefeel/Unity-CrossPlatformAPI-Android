@@ -6,6 +6,7 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.UiObject;
+import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiSelector;
 import android.util.Log;
 
@@ -96,21 +97,29 @@ public class ExampleInstrumentedTest {
         Share.shareText("this is share text");
         Log.d(TAG, "after share text");
 
-        UiObject button = mDevice.findObject(new UiSelector().text("JUST ONCE"));
-        Log.d(TAG, "shareText button " + button.exists());
-        if (button.exists() && button.isEnabled()) {
-            button.click();
-        }
+        clickButton("JUST ONCE");
 
         ////// 出现系统提示框，Android5.1会阻塞主线程，需要将消息选择框取消掉
         // 退出IME界面
         mDevice.pressBack();
-        // 退出消息界面，并提示二次确认
-        mDevice.pressBack();
-        // 确认退出消息界面
-        UiObject okBtn = mDevice.findObject(new UiSelector().text("OK"));
-        if (okBtn.exists() && okBtn.isEnabled()) {
-            okBtn.click();
+        if (!clickButton("OK")) {
+            // 退出消息界面，并提示二次确认
+            mDevice.pressBack();
+            // 确认退出消息界面
+            clickButton("OK");
         }
+    }
+
+    private boolean clickButton(String text) throws UiObjectNotFoundException {
+        UiObject button = mDevice.findObject(new UiSelector().text(text));
+
+        boolean exists = button.exists();
+        boolean isClickable = exists ? button.isClickable() : false;
+        Log.d(TAG, String.format("clickButton text=%s exists=%b clickable=%b", text, exists, isClickable));
+        if (exists && isClickable) {
+            button.click();
+            return true;
+        }
+        return false;
     }
 }
